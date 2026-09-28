@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Something Special 💖</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    min-height:100vh;
+    font-family:Arial,sans-serif;
+    background:linear-gradient(135deg,#ff758c,#ff7eb3);
+    overflow:hidden;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.page{
+    display:none;
+    width:100%;
+    min-height:100vh;
+    justify-content:center;
+    align-items:center;
+    padding:25px;
+    text-align:center;
+}
+
+.page.active{display:flex}
+
+.card{
+    width:92%;
+    max-width:520px;
+    padding:45px 25px;
+    background:rgba(255,255,255,.96);
+    border-radius:28px;
+    box-shadow:0 15px 45px rgba(0,0,0,.2);
+    position:relative;
+    z-index:2;
+}
+
+h1{
+    color:#ff4f81;
+    font-size:36px;
+    margin:15px 0;
+}
+
+p{
+    color:#555;
+    font-size:18px;
+    line-height:1.7;
+}
+
+.big-heart{
+    font-size:65px;
+    animation:beat 1s infinite;
+}
+
+@keyframes beat{
+    0%,100%{transform:scale(1)}
+    50%{transform:scale(1.18)}
+}
+
+.next{
+    margin-top:25px;
+    border:0;
+    padding:14px 32px;
+    border-radius:30px;
+    background:#ff4f81;
+    color:white;
+    font-size:17px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.next:hover{transform:scale(1.06)}
+
+.buttons{
+    margin-top:30px;
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    min-height:55px;
+}
+
+#yes,#no{
+    border:0;
+    padding:14px 30px;
+    font-size:17px;
+    border-radius:30px;
+    cursor:pointer;
+}
+
+#yes{
+    background:#ff4f81;
+    color:white;
+}
+
+#no{
+    background:#ddd;
+    color:#333;
+    position:relative;
+}
+
+#message{
+    display:none;
+    margin-top:25px;
+    font-size:24px;
+    color:#ff4f81;
+    font-weight:bold;
+}
+
+.floating{
+    position:fixed;
+    bottom:-40px;
+    font-size:25px;
+    opacity:.7;
+    pointer-events:none;
+    animation:floatUp linear forwards;
+    z-index:1;
+}
+
+@keyframes floatUp{
+    from{
+        transform:translateY(0) rotate(0deg);
+        opacity:.8;
+    }
+    to{
+        transform:translateY(-110vh) rotate(360deg);
+        opacity:0;
+    }
+}
+
+.small{
+    font-size:15px;
+    color:#999;
+    margin-top:20px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- PAGE 1 -->
+<section class="page active" id="page1">
+    <div class="card">
+        <div class="big-heart">💖</div>
+        <h1>Hey Mim...</h1>
+        <p>
+            I made something small<br>
+            but very special for you. ✨
+        </p>
+        <button class="next" onclick="showPage(2)">
+            Open It 💌
+        </button>
+    </div>
+</section>
+
+
+<!-- PAGE 2 -->
+<section class="page" id="page2">
+    <div class="card">
+        <div class="big-heart">🌸</div>
+        <h1>Just One Thing...</h1>
+        <p>
+            Some people make ordinary moments<br>
+            feel a little more special. ❤️
+            <br><br>
+            And you are one of those people for me.
+        </p>
+
+        <button class="next" onclick="showPage(3)">
+            One Last Thing... 💗
+        </button>
+    </div>
+</section>
+
+
+<!-- PAGE 3 -->
+<section class="page" id="page3">
+    <div class="card">
+        <div class="big-heart">💖</div>
+
+        <h1>Will You Marry Me, Mim?</h1>
+
+        <p>
+            I have one very important question for you... 💍
+        </p>
+
+        <div class="buttons">
+            <button id="yes">Yes 💍</button>
+            <button id="no">No 🙈</button>
+        </div>
+
+        <div id="message">
+            Yay! 💖✨<br>
+            You made this moment special!
+        </div>
+
+        <div class="small">
+            Whatever your answer, thank you for reading this. ❤️
+        </div>
+    </div>
+</section>
+
+
+<script>
+
+function showPage(number){
+    document.querySelectorAll(".page").forEach(page=>{
+        page.classList.remove("active");
+    });
+
+    document.getElementById("page"+number).classList.add("active");
+}
+
+
+// YES BUTTON
+document.getElementById("yes").addEventListener("click",function(){
+
+    document.getElementById("message").style.display="block";
+
+    document.getElementById("yes").style.display="none";
+    document.getElementById("no").style.display="none";
+
+});
+
+
+// NO BUTTON — works with both mouse and phone touch
+const noButton=document.getElementById("no");
+
+function moveNoButton(e){
+    if(e) e.preventDefault();
+
+    const maxX=window.innerWidth < 600 ? 120 : 180;
+    const maxY=window.innerWidth < 600 ? 100 : 70;
+
+    const x=Math.random()*(maxX*2)-maxX;
+    const y=Math.random()*(maxY*2)-maxY;
+
+    noButton.style.transform=`translate(${x}px, ${y}px)`;
+}
+
+noButton.addEventListener("mouseenter",moveNoButton);
+noButton.addEventListener("touchstart",moveNoButton,{passive:false});
+
+
+// FLOATING HEARTS
+function createHeart(){
+
+    const heart=document.createElement("div");
+
+    heart.className="floating";
+    heart.innerHTML=["💗","💖","💕","✨"][Math.floor(Math.random()*4)];
+
+    heart.style.left=Math.random()*100+"vw";
+    heart.style.animationDuration=(4+Math.random()*4)+"s";
+
+    document.body.appendChild(heart);
+
+    setTimeout(()=>{
+        heart.remove();
+    },8000);
+}
+
+setInterval(createHeart,700);
+
+</script>
+
+</body>
+</html>
